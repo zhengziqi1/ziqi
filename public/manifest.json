@@ -1,0 +1,16 @@
+{
+  "name": "海魂硬糕",
+  "short_name": "海魂硬糕",
+  "description": "传承百年的舟山传统美食",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f1faee",
+  "theme_color": "#e63946",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ]
+}
