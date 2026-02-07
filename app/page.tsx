@@ -1,11 +1,8 @@
-'use client';
-
 import { Button } from '@/components/ui/button';
-import { useState, useEffect, useRef } from 'react';
 
 export default function Home() {
-  const [isVisible, setIsVisible] = useState(false);
-  const [products, setProducts] = useState([
+  // 产品数据
+  const products = [
     {
       id: '1',
       name: '芝麻糕',
@@ -62,52 +59,7 @@ export default function Home() {
       image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=chinese%20walnut%20cake%20package%20with%20traditional%20design&image_size=square',
       description: '添加精选核桃，营养丰富，口感香脆'
     }
-  ]);
-
-  // 从API获取产品数据
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch('/api/products');
-        if (response.ok) {
-          const data = await response.json();
-          if (data && data.length > 0) {
-            setProducts(data);
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
-  // 滚动动画效果
-  useEffect(() => {
-    // 页面加载时的动画效果
-    setIsVisible(true);
-
-    // 滚动检测函数
-    const handleScroll = () => {
-      const elements = document.querySelectorAll('.scroll-reveal');
-      elements.forEach(element => {
-        const elementTop = element.getBoundingClientRect().top;
-        const elementVisible = 150;
-        if (elementTop < window.innerHeight - elementVisible) {
-          element.classList.add('active');
-        }
-      });
-    };
-
-    // 添加滚动事件监听器
-    window.addEventListener('scroll', handleScroll);
-    // 初始检查
-    handleScroll();
-
-    // 清理事件监听器
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f1faee] to-[#a8dadc] dark:from-gray-900 dark:to-gray-800">
@@ -115,28 +67,28 @@ export default function Home() {
       <section className="py-12 md:py-16 lg:py-28 relative overflow-hidden">
         {/* Background Animation */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute top-1/4 left-1/4 w-48 md:w-64 lg:w-80 h-48 md:h-64 lg:h-80 bg-[#e63946] rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob"></div>
-          <div className="absolute top-3/4 right-1/4 w-48 md:w-64 lg:w-80 h-48 md:h-64 lg:h-80 bg-[#1d3557] rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-2000"></div>
-          <div className="absolute bottom-1/4 left-1/3 w-48 md:w-64 lg:w-80 h-48 md:h-64 lg:h-80 bg-[#457b9d] rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-4000"></div>
+          <div className="absolute top-1/4 left-1/4 w-48 md:w-64 lg:w-80 h-48 md:h-64 lg:h-80 bg-[#e63946] rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
+          <div className="absolute top-3/4 right-1/4 w-48 md:w-64 lg:w-80 h-48 md:h-64 lg:h-80 bg-[#1d3557] rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
+          <div className="absolute bottom-1/4 left-1/3 w-48 md:w-64 lg:w-80 h-48 md:h-64 lg:h-80 bg-[#457b9d] rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-[#e63946] dark:text-white mb-6 leading-tight opacity-0 ${isVisible ? 'animate-fade-in' : ''}`}>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-[#e63946] dark:text-white mb-6 leading-tight">
               海魂硬糕
             </h1>
-            <p className={`text-base sm:text-lg md:text-xl lg:text-2xl text-[#1d3557] dark:text-gray-300 mb-8 sm:mb-12 max-w-2xl mx-auto opacity-0 ${isVisible ? 'animate-fade-in animation-delay-200' : ''}`}>
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-[#1d3557] dark:text-gray-300 mb-8 sm:mb-12 max-w-2xl mx-auto">
               传承百年的舟山传统美食，源自岱山长涂岛的特色糕点
             </p>
-            <div className={`flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center opacity-0 ${isVisible ? 'animate-fade-in animation-delay-400' : ''}`}>
-              <Button size="lg" className="px-6 sm:px-8 lg:px-10 py-4 sm:py-5 lg:py-6 bg-[#e63946] hover:bg-[#c1121f] transform transition-all duration-300 hover:scale-105 hover:shadow-lg animate-gradient-flow">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
+              <Button size="lg" className="px-6 sm:px-8 lg:px-10 py-4 sm:py-5 lg:py-6 bg-[#e63946] hover:bg-[#c1121f] transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
                 立即购买
               </Button>
               <Button variant="outline" size="lg" className="px-6 sm:px-8 lg:px-10 py-4 sm:py-5 lg:py-6 border-[#1d3557] text-[#1d3557] hover:bg-[#1d3557] hover:text-white transform transition-all duration-300 hover:scale-105">
                 了解更多
               </Button>
             </div>
-            <div className={`mt-12 sm:mt-16 md:mt-24 opacity-0 ${isVisible ? 'animate-fade-in animation-delay-600' : ''}`}>
+            <div className="mt-12 sm:mt-16 md:mt-24">
               <div className="w-16 sm:w-20 h-1 bg-[#e63946] mx-auto mb-4 sm:mb-6 rounded-full"></div>
               <p className="text-sm sm:text-lg text-[#1d3557] dark:text-gray-400">
                 浙江省非物质文化遗产 • 浙江老字号
@@ -149,17 +101,17 @@ export default function Home() {
       {/* Products Section */}
       <section className="py-16 md:py-24 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4 sm:px-6">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-[#e63946] dark:text-white mb-4 scroll-reveal">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-[#e63946] dark:text-white mb-4">
             产品系列
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-center text-[#1d3557] dark:text-gray-300 mb-12 sm:mb-16 max-w-3xl mx-auto scroll-reveal">
+          <p className="text-base sm:text-lg md:text-xl text-center text-[#1d3557] dark:text-gray-300 mb-12 sm:mb-16 max-w-3xl mx-auto">
             精选优质原料，传统工艺制作，为您带来正宗的海岛风味
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
             {products.map((product, index) => (
               <div 
                 key={product.id}
-                className={`bg-[#f1faee] dark:bg-gray-700 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-700 transform hover:-translate-y-4 hover-lift scroll-reveal`}
+                className="bg-[#f1faee] dark:bg-gray-700 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-700 transform hover:-translate-y-4"
                 style={{ transitionDelay: `${index * 200}ms` }}
               >
                 <div className="relative overflow-hidden group">
@@ -175,7 +127,7 @@ export default function Home() {
                       </p>
                     </div>
                   </div>
-                  <div className="absolute top-4 right-4 bg-[#e63946] text-white text-sm font-bold px-3 py-1 sm:px-4 sm:py-2 rounded-full animate-pulse">
+                  <div className="absolute top-4 right-4 bg-[#e63946] text-white text-sm font-bold px-3 py-1 sm:px-4 sm:py-2 rounded-full">
                     ¥{product.price}
                   </div>
                 </div>
@@ -199,13 +151,13 @@ export default function Home() {
       {/* Features Section */}
       <section className="py-16 md:py-24 bg-gradient-to-br from-[#1d3557] to-[#457b9d]">
         <div className="container mx-auto px-4 sm:px-6">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-white mb-12 sm:mb-16 scroll-reveal">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-white mb-12 sm:mb-16">
             为什么选择海魂硬糕
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10">
             {/* Feature 1 */}
-            <div className="bg-white/10 backdrop-blur-md dark:bg-gray-800/80 p-6 sm:p-8 rounded-xl shadow-xl border border-white/20 transform transition-all duration-500 hover:-translate-y-4 scroll-reveal bg-glass">
-              <div className="w-16 sm:w-20 h-16 sm:h-20 bg-[#e63946] rounded-full flex items-center justify-center mb-6 sm:mb-8 mx-auto animate-pulse">
+            <div className="bg-white/10 backdrop-blur-md dark:bg-gray-800/80 p-6 sm:p-8 rounded-xl shadow-xl border border-white/20 transform transition-all duration-500 hover:-translate-y-4">
+              <div className="w-16 sm:w-20 h-16 sm:h-20 bg-[#e63946] rounded-full flex items-center justify-center mb-6 sm:mb-8 mx-auto">
                 <span className="text-white text-2xl sm:text-3xl">🎯</span>
               </div>
               <h3 className="text-xl sm:text-2xl font-semibold text-white mb-4 text-center">
@@ -217,8 +169,8 @@ export default function Home() {
             </div>
 
             {/* Feature 2 */}
-            <div className="bg-white/10 backdrop-blur-md dark:bg-gray-800/80 p-6 sm:p-8 rounded-xl shadow-xl border border-white/20 transform transition-all duration-500 hover:-translate-y-4 scroll-reveal bg-glass animation-delay-200">
-              <div className="w-16 sm:w-20 h-16 sm:h-20 bg-[#e63946] rounded-full flex items-center justify-center mb-6 sm:mb-8 mx-auto animate-pulse">
+            <div className="bg-white/10 backdrop-blur-md dark:bg-gray-800/80 p-6 sm:p-8 rounded-xl shadow-xl border border-white/20 transform transition-all duration-500 hover:-translate-y-4">
+              <div className="w-16 sm:w-20 h-16 sm:h-20 bg-[#e63946] rounded-full flex items-center justify-center mb-6 sm:mb-8 mx-auto">
                 <span className="text-white text-2xl sm:text-3xl">🌾</span>
               </div>
               <h3 className="text-xl sm:text-2xl font-semibold text-white mb-4 text-center">
@@ -230,8 +182,8 @@ export default function Home() {
             </div>
 
             {/* Feature 3 */}
-            <div className="bg-white/10 backdrop-blur-md dark:bg-gray-800/80 p-6 sm:p-8 rounded-xl shadow-xl border border-white/20 transform transition-all duration-500 hover:-translate-y-4 scroll-reveal bg-glass animation-delay-400">
-              <div className="w-16 sm:w-20 h-16 sm:h-20 bg-[#e63946] rounded-full flex items-center justify-center mb-6 sm:mb-8 mx-auto animate-pulse">
+            <div className="bg-white/10 backdrop-blur-md dark:bg-gray-800/80 p-6 sm:p-8 rounded-xl shadow-xl border border-white/20 transform transition-all duration-500 hover:-translate-y-4">
+              <div className="w-16 sm:w-20 h-16 sm:h-20 bg-[#e63946] rounded-full flex items-center justify-center mb-6 sm:mb-8 mx-auto">
                 <span className="text-white text-2xl sm:text-3xl">🏆</span>
               </div>
               <h3 className="text-xl sm:text-2xl font-semibold text-white mb-4 text-center">
@@ -248,11 +200,11 @@ export default function Home() {
       {/* Testimonial Section */}
       <section className="py-16 md:py-24 bg-[#f1faee] dark:bg-gray-700">
         <div className="container mx-auto px-4 sm:px-6">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-[#e63946] dark:text-white mb-12 sm:mb-16 scroll-reveal">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-[#e63946] dark:text-white mb-12 sm:mb-16">
             客户评价
           </h2>
           <div className="max-w-4xl mx-auto">
-            <div className="bg-white dark:bg-gray-800 p-6 sm:p-8 md:p-10 rounded-2xl shadow-xl scroll-reveal">
+            <div className="bg-white dark:bg-gray-800 p-6 sm:p-8 md:p-10 rounded-2xl shadow-xl">
               <div className="flex items-center justify-center mb-6 sm:mb-8">
                 <div className="text-[#e63946] text-3xl sm:text-4xl">
                   ★★★★★
@@ -282,12 +234,12 @@ export default function Home() {
       {/* About Section with New Images */}
       <section className="py-16 md:py-24 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4 sm:px-6">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-[#e63946] dark:text-white mb-12 sm:mb-16 scroll-reveal">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-[#e63946] dark:text-white mb-12 sm:mb-16">
             关于我们
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
             {/* Image 1: Entrance */}
-            <div className="rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-700 transform hover:-translate-y-4 hover-lift scroll-reveal">
+            <div className="rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-700 transform hover:-translate-y-4">
               <img 
                 src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=traditional%20chinese%20store%20entrance%20with%20wooden%20gate%20and%20chinese%20characters%20established%201885&image_size=square"
                 alt="店门外观"
@@ -304,7 +256,7 @@ export default function Home() {
             </div>
             
             {/* Image 2: Certificates */}
-            <div className="rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-700 transform hover:-translate-y-4 hover-lift scroll-reveal">
+            <div className="rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-700 transform hover:-translate-y-4">
               <img 
                 src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=wall%20of%20certificates%20and%20awards%20for%20traditional%20chinese%20food%20business&image_size=square"
                 alt="荣誉证书墙"
@@ -321,7 +273,7 @@ export default function Home() {
             </div>
             
             {/* Image 3: Exhibition Hall */}
-            <div className="rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-700 transform hover:-translate-y-4 hover-lift scroll-reveal">
+            <div className="rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-700 transform hover:-translate-y-4">
               <img 
                 src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=traditional%20chinese%20food%20exhibition%20hall%20with%20statues%20showing%20traditional%20making%20process&image_size=square"
                 alt="非遗文化展厅"
@@ -341,18 +293,18 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 md:py-28 bg-gradient-to-r from-[#e63946] to-[#1d3557] animate-gradient-flow">
+      <section className="py-20 md:py-28 bg-gradient-to-r from-[#e63946] to-[#1d3557]">
         <div className="container mx-auto px-4 sm:px-6 text-center">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6 scroll-reveal">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6">
             立即品尝百年传统美食
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-white mb-8 sm:mb-12 max-w-3xl mx-auto scroll-reveal">
+          <p className="text-base sm:text-lg md:text-xl text-white mb-8 sm:mb-12 max-w-3xl mx-auto">
             海魂硬糕，传承百年的舟山特色美食，让您品味正宗的海岛风味。现在下单，享受限时优惠！
           </p>
-          <Button size="lg" className="px-8 sm:px-10 lg:px-12 py-4 sm:py-6 lg:py-8 bg-white text-[#e63946] hover:bg-[#f1faee] transform transition-all duration-300 hover:scale-110 shadow-lg scroll-reveal">
+          <Button size="lg" className="px-8 sm:px-10 lg:px-12 py-4 sm:py-6 lg:py-8 bg-white text-[#e63946] hover:bg-[#f1faee] transform transition-all duration-300 hover:scale-110 shadow-lg">
             立即购买
           </Button>
-          <div className="mt-8 sm:mt-12 text-white opacity-80 scroll-reveal">
+          <div className="mt-8 sm:mt-12 text-white opacity-80">
             <p className="text-sm sm:text-base">全国包邮 • 7天无理由退换 • 假一赔十</p>
           </div>
         </div>
