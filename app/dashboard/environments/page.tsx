@@ -1,9 +1,61 @@
 'use client';
 
+import { useEffect } from 'react';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 
 export default function EnvironmentsPage() {
+  useEffect(() => {
+    // Load environments
+    const loadEnvironments = async () => {
+      const response = await fetch('/api/environments');
+      const environments = await response.json();
+      
+      const list = document.getElementById('environments-list');
+      if (list) {
+        list.innerHTML = environments.map((env: any) => `
+          <div className="border p-4 rounded ${env.isDefault ? 'bg-yellow-50' : ''}">
+            <h3 className="font-semibold">${env.name}</h3>
+            <p className="text-sm text-gray-600">${env.description || '无描述'}</p>
+            <p className="text-xs mt-2 ${env.isDefault ? 'text-yellow-600' : 'text-gray-500'}">
+              ${env.isDefault ? '默认环境' : '普通环境'}
+            </p>
+          </div>
+        `).join('');
+      }
+    };
+
+    // Submit form
+    const form = document.getElementById('environment-form') as HTMLFormElement;
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const name = (document.getElementById('name') as HTMLInputElement).value;
+        const description = (document.getElementById('description') as HTMLTextAreaElement).value;
+        const isDefault = (document.getElementById('isDefault') as HTMLInputElement).checked;
+
+        const response = await fetch('/api/environments', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name, description, isDefault }),
+        });
+
+        if (response.ok) {
+          // Reload environments
+          await loadEnvironments();
+          // Reset form
+          form.reset();
+        }
+      });
+    }
+
+    // Initial load
+    loadEnvironments();
+  }, []);
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">环境管理</h1>
@@ -51,55 +103,3 @@ export default function EnvironmentsPage() {
     </div>
   );
 }
-
-// Client-side script
-document.addEventListener('DOMContentLoaded', async () => {
-  // Load environments
-  const loadEnvironments = async () => {
-    const response = await fetch('/api/environments');
-    const environments = await response.json();
-    
-    const list = document.getElementById('environments-list');
-    if (list) {
-      list.innerHTML = environments.map((env: any) => `
-        <div className="border p-4 rounded ${env.isDefault ? 'bg-yellow-50' : ''}">
-          <h3 className="font-semibold">${env.name}</h3>
-          <p className="text-sm text-gray-600">${env.description || '无描述'}</p>
-          <p className="text-xs mt-2 ${env.isDefault ? 'text-yellow-600' : 'text-gray-500'}">
-            ${env.isDefault ? '默认环境' : '普通环境'}
-          </p>
-        </div>
-      `).join('');
-    }
-  };
-
-  // Submit form
-  const form = document.getElementById('environment-form');
-  if (form) {
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const name = (document.getElementById('name') as HTMLInputElement).value;
-      const description = (document.getElementById('description') as HTMLTextAreaElement).value;
-      const isDefault = (document.getElementById('isDefault') as HTMLInputElement).checked;
-
-      const response = await fetch('/api/environments', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, description, isDefault }),
-      });
-
-      if (response.ok) {
-        // Reload environments
-        await loadEnvironments();
-        // Reset form
-        form.reset();
-      }
-    });
-  }
-
-  // Initial load
-  await loadEnvironments();
-});

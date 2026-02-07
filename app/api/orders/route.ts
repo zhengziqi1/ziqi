@@ -37,7 +37,7 @@ export async function GET() {
 // POST /api/orders - Create a new order
 export async function POST(request: NextRequest) {
   try {
-    const { userId, total, status, orderItems } = await request.json();
+    const { userId, total, status, orderItems, environmentId = 1 } = await request.json();
 
     // Create order
     const order = await db.order.create({
@@ -45,6 +45,7 @@ export async function POST(request: NextRequest) {
         userId,
         total,
         status,
+        environmentId,
         orderItems: {
           create: orderItems.map((item: any) => ({
             productId: item.productId,

@@ -25,7 +25,7 @@ export async function GET() {
 // POST /api/users - Create a new user
 export async function POST(request: NextRequest) {
   try {
-    const { name, email, password, role } = await request.json();
+    const { name, email, password, role, environmentId = 1 } = await request.json();
 
     // Check if user already exists
     const existingUser = await db.user.findUnique({
@@ -46,6 +46,7 @@ export async function POST(request: NextRequest) {
         email,
         password: hashedPassword,
         role: role || 'USER',
+        environmentId,
       },
       select: {
         id: true,

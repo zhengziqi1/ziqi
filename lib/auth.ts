@@ -11,7 +11,7 @@ declare module 'next-auth' {
     environment: {
       id: string;
       name: string;
-      description?: string;
+      description: string | null;
       isDefault: boolean;
     };
   }
@@ -26,7 +26,7 @@ declare module 'next-auth' {
       environment: {
         id: string;
         name: string;
-        description?: string;
+        description: string | null;
         isDefault: boolean;
       };
     };
@@ -44,7 +44,7 @@ declare module 'next-auth/jwt' {
     environment: {
       id: string;
       name: string;
-      description?: string;
+      description: string | null;
       isDefault: boolean;
     } | null | undefined;
   }
