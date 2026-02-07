@@ -3,10 +3,17 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 
-// Extend the User type to include role
+// Extend the User type to include role and environment
 declare module 'next-auth' {
   interface User {
     role: string;
+    environmentId: string;
+    environment: {
+      id: string;
+      name: string;
+      description?: string;
+      isDefault: boolean;
+    };
   }
 
   interface Session {
@@ -15,17 +22,31 @@ declare module 'next-auth' {
       email: string;
       name: string;
       role: string;
+      environmentId: string;
+      environment: {
+        id: string;
+        name: string;
+        description?: string;
+        isDefault: boolean;
+      };
     };
   }
 }
 
-// Extend the JWT type to include role
+// Extend the JWT type to include role and environment
 declare module 'next-auth/jwt' {
   interface JWT {
     id: string;
     email: string | null | undefined;
     name: string | null | undefined;
     role: string | null | undefined;
+    environmentId: string | null | undefined;
+    environment: {
+      id: string;
+      name: string;
+      description?: string;
+      isDefault: boolean;
+    } | null | undefined;
   }
 }
 
@@ -56,6 +77,9 @@ export const authOptions: NextAuthOptions = {
           where: {
             email: credentials.email,
           },
+          include: {
+            environment: true,
+          },
         });
 
         if (!user) {
@@ -76,6 +100,8 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: user.name,
           role: user.role,
+          environmentId: user.environmentId,
+          environment: user.environment,
         };
       },
     }),
@@ -95,6 +121,8 @@ export const authOptions: NextAuthOptions = {
         token.email = user.email;
         token.name = user.name;
         token.role = user.role;
+        token.environmentId = user.environmentId;
+        token.environment = user.environment;
       }
       return token;
     },
@@ -104,6 +132,8 @@ export const authOptions: NextAuthOptions = {
         session.user.email = token.email as string;
         session.user.name = token.name as string;
         session.user.role = token.role as string;
+        session.user.environmentId = token.environmentId as string;
+        session.user.environment = token.environment as any;
       }
       return session;
     },
