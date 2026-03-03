@@ -1,77 +1,213 @@
+'use client';
+
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export default function Home() {
+  // 状态管理
+  const [isLoaded, setIsLoaded] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // 页面加载和粒子效果初始化
+  useEffect(() => {
+    // 页面加载动画
+    setTimeout(() => {
+      setIsLoaded(true);
+    }, 300);
+
+    // 初始化粒子效果
+    const initParticles = async () => {
+      try {
+        // 动态加载粒子效果库
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js';
+        script.onload = () => {
+          const particlesJS = (window as any).particlesJS;
+          if (particlesJS) {
+            particlesJS('particles-js', {
+              particles: {
+                number: {
+                  value: 80,
+                  density: {
+                    enable: true,
+                    value_area: 800
+                  }
+                },
+                color: {
+                  value: '#e63946'
+                },
+                shape: {
+                  type: 'circle',
+                  stroke: {
+                    width: 0,
+                    color: '#000000'
+                  }
+                },
+                opacity: {
+                  value: 0.5,
+                  random: false,
+                  anim: {
+                    enable: true,
+                    speed: 1,
+                    opacity_min: 0.1,
+                    sync: false
+                  }
+                },
+                size: {
+                  value: 3,
+                  random: true,
+                  anim: {
+                    enable: true,
+                    speed: 2,
+                    size_min: 0.1,
+                    sync: false
+                  }
+                },
+                line_linked: {
+                  enable: true,
+                  distance: 150,
+                  color: '#1d3557',
+                  opacity: 0.4,
+                  width: 1
+                },
+                move: {
+                  enable: true,
+                  speed: 1,
+                  direction: 'none',
+                  random: false,
+                  straight: false,
+                  out_mode: 'out',
+                  bounce: false
+                }
+              },
+              interactivity: {
+                detect_on: 'canvas',
+                events: {
+                  onhover: {
+                    enable: true,
+                    mode: 'grab'
+                  },
+                  onclick: {
+                    enable: true,
+                    mode: 'push'
+                  },
+                  resize: true
+                },
+                modes: {
+                  'grab': {
+                    'distance': 140,
+                    'line_linked': {
+                      'opacity': 1
+                    }
+                  },
+                  'push': {
+                    'particles_nb': 4
+                  }
+                }
+              },
+              retina_detect: true
+            });
+          }
+        };
+        document.body.appendChild(script);
+
+        return () => {
+          document.body.removeChild(script);
+        };
+      } catch (error) {
+        console.error('粒子效果初始化失败:', error);
+      }
+    };
+
+    initParticles();
+  }, []);
+
   // 产品数据
   const products = [
     {
       id: '1',
-      name: '芝麻糕',
+      name: '传统硬糕',
       price: '28.00',
-      image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=chinese%20sesame%20cake%20package%20with%20traditional%20design%20showing%20people%20making%20cakes%20in%20a%20traditional%20workshop&image_size=square',
-      description: '精选优质芝麻，传统工艺制作，口感酥脆，香气四溢'
+      image: 'https://n.sinaimg.cn/sinacn16/474/w800h474/20180920/0696-hhuhism4152243.jpg',
+      description: '经典传统口味，采用百年配方制作，口感酥脆，甜而不腻'
     },
     {
       id: '2',
-      name: '海苔糕',
+      name: '小包装硬糕',
       price: '30.00',
-      image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=chinese%20seaweed%20cake%20package%20with%20traditional%20design%20showing%20people%20making%20cakes%20in%20a%20traditional%20workshop&image_size=square',
-      description: '添加天然海苔，咸香可口，营养丰富'
+      image: 'https://img.alicdn.com/i2/2200592611688/O1CN01oD2QJV1OL9EeFfic8_!!2200592611688.jpg',
+      description: '便捷小包装，适合随身携带，随时随地享受传统美味'
     },
     {
       id: '3',
-      name: '高粱糕',
+      name: '礼盒装硬糕',
       price: '29.00',
-      image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=chinese%20sorghum%20cake%20package%20with%20traditional%20design%20showing%20people%20making%20cakes%20in%20a%20traditional%20workshop&image_size=square',
-      description: '选用优质高粱，口感软糯，甜度适中'
+      image: 'https://ts4.tc.mm.bing.net/th/id/OIP-C.yyGtgPJNEA61vMc7Jgd01wHaHa?rs=1&pid=ImgDetMain&o=7&rm=3',
+      description: '精美礼盒包装，内含多种口味，是送礼的绝佳选择'
     },
     {
       id: '4',
-      name: '黄豆糕',
+      name: '精品硬糕',
       price: '31.00',
-      image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=chinese%20soybean%20cake%20package%20with%20traditional%20design%20showing%20people%20making%20cakes%20in%20a%20traditional%20workshop&image_size=square',
-      description: '精选黄豆，富含蛋白质，口感细腻'
+      image: 'https://n.sinaimg.cn/sinacn16/474/w800h474/20180920/0696-hhuhism4152243.jpg',
+      description: '精选原料，精致工艺，品质上乘，适合送礼'
     },
     {
       id: '5',
-      name: '玉米糕',
+      name: '长涂硬糕',
       price: '27.00',
-      image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=chinese%20corn%20cake%20package%20with%20traditional%20design%20showing%20people%20making%20cakes%20in%20a%20traditional%20workshop&image_size=square',
-      description: '选用优质玉米，口感香甜，营养均衡'
+      image: 'https://img.alicdn.com/i2/2200592611688/O1CN01oD2QJV1OL9EeFfic8_!!2200592611688.jpg',
+      description: '正宗长涂硬糕，传统工艺制作，地道舟山风味'
     },
     {
       id: '6',
-      name: '红豆糕',
+      name: '倭井潭硬糕',
       price: '32.00',
-      image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=chinese%20red%20bean%20cake%20package%20with%20traditional%20design%20showing%20people%20making%20cakes%20in%20a%20traditional%20workshop%20with%20WU%20GU%20ZA%20LIANG%20text&image_size=square',
-      description: '选用优质红豆，口感绵密，甜度适中'
-    },
-    {
-      id: '7',
-      name: '绿豆糕',
-      price: '30.00',
-      image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=chinese%20green%20bean%20cake%20package%20with%20traditional%20design&image_size=square',
-      description: '精选优质绿豆，清凉解暑，口感细腻'
-    },
-    {
-      id: '8',
-      name: '核桃糕',
-      price: '35.00',
-      image: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=chinese%20walnut%20cake%20package%20with%20traditional%20design&image_size=square',
-      description: '添加精选核桃，营养丰富，口感香脆'
+      image: 'https://ts2.tc.mm.bing.net/th/id/OIP-C.4m7WVzB309r8jq3iXUo8dQHaE8?rs=1&pid=ImgDetMain&o=7&rm=3',
+      description: '正宗倭井潭硬糕，历史悠久，工艺精湛，风味独特'
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f1faee] to-[#a8dadc] dark:from-gray-900 dark:to-gray-800">
-      {/* Hero Section */}
-      <section className="py-12 md:py-16 lg:py-28 relative overflow-hidden">
-        {/* Background Animation */}
-        <div className="absolute inset-0 z-0">
-          <div className="absolute top-1/4 left-1/4 w-48 md:w-64 lg:w-80 h-48 md:h-64 lg:h-80 bg-[#e63946] rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
-          <div className="absolute top-3/4 right-1/4 w-48 md:w-64 lg:w-80 h-48 md:h-64 lg:h-80 bg-[#1d3557] rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
-          <div className="absolute bottom-1/4 left-1/3 w-48 md:w-64 lg:w-80 h-48 md:h-64 lg:h-80 bg-[#457b9d] rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-[#f1faee] to-[#a8dadc] dark:from-gray-900 dark:to-gray-800 overflow-hidden" ref={containerRef}>
+      {/* 动态背景 */}
+      <div className="fixed inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#f1faee] to-[#a8dadc] dark:from-gray-900 dark:to-gray-800"></div>
+        {/* 粒子效果 */}
+        <div className="absolute inset-0" id="particles-js"></div>
+      </div>
 
+      {/* Navigation Bar */}
+      <nav className="bg-white/90 backdrop-blur-md dark:bg-gray-900/90 shadow-md fixed top-0 left-0 right-0 z-50">
+        <div className="container mx-auto px-4 sm:px-6 py-4">
+          <div className="flex justify-between items-center">
+            {/* Brand Logo */}
+            <Link href="/" className="flex items-center space-x-2">
+              <span className="text-2xl font-bold text-[#e63946] dark:text-white">海魂硬糕</span>
+            </Link>
+            
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-8">
+              <Link href="/" className="text-[#1d3557] dark:text-white hover:text-[#e63946] dark:hover:text-[#e63946] font-medium transition-colors duration-300">首页</Link>
+              <Link href="/technology" className="text-[#1d3557] dark:text-white hover:text-[#e63946] dark:hover:text-[#e63946] font-medium transition-colors duration-300">工艺科技</Link>
+              <Link href="/gallery" className="text-[#1d3557] dark:text-white hover:text-[#e63946] dark:hover:text-[#e63946] font-medium transition-colors duration-300">展示中心</Link>
+              <Link href="/effects" className="text-[#1d3557] dark:text-white hover:text-[#e63946] dark:hover:text-[#e63946] font-medium transition-colors duration-300">倭井潭历史</Link>
+              <Button className="bg-[#e63946] hover:bg-[#c1121f] text-white">立即购买</Button>
+            </div>
+            
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <Button variant="ghost" size="icon">
+                <span className="text-2xl">☰</span>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </nav>
+      
+      {/* Hero Section */}
+      <section className="py-24 md:py-28 lg:py-32 pt-32 md:pt-36 lg:pt-40 relative overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-[#e63946] dark:text-white mb-6 leading-tight">
@@ -99,7 +235,7 @@ export default function Home() {
       </section>
 
       {/* Products Section */}
-      <section className="py-16 md:py-24 bg-white dark:bg-gray-800">
+      <section className="py-16 md:py-24 bg-white dark:bg-gray-800 relative z-10">
         <div className="container mx-auto px-4 sm:px-6">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-[#e63946] dark:text-white mb-4">
             产品系列
@@ -149,7 +285,7 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-[#1d3557] to-[#457b9d]">
+      <section className="py-16 md:py-24 bg-gradient-to-br from-[#1d3557] to-[#457b9d] relative z-10">
         <div className="container mx-auto px-4 sm:px-6">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-white mb-12 sm:mb-16">
             为什么选择海魂硬糕
@@ -198,7 +334,7 @@ export default function Home() {
       </section>
 
       {/* Testimonial Section */}
-      <section className="py-16 md:py-24 bg-[#f1faee] dark:bg-gray-700">
+      <section className="py-16 md:py-24 bg-[#f1faee] dark:bg-gray-700 relative z-10">
         <div className="container mx-auto px-4 sm:px-6">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-[#e63946] dark:text-white mb-12 sm:mb-16">
             客户评价
@@ -232,59 +368,59 @@ export default function Home() {
       </section>
 
       {/* About Section with New Images */}
-      <section className="py-16 md:py-24 bg-white dark:bg-gray-800">
+      <section className="py-16 md:py-24 bg-white dark:bg-gray-800 relative z-10">
         <div className="container mx-auto px-4 sm:px-6">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-[#e63946] dark:text-white mb-12 sm:mb-16">
             关于我们
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
-            {/* Image 1: Entrance */}
+            {/* Image 1: Traditional Production */}
             <div className="rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-700 transform hover:-translate-y-4">
               <img 
-                src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=traditional%20chinese%20store%20entrance%20with%20wooden%20gate%20and%20chinese%20characters%20established%201885&image_size=square"
-                alt="店门外观"
+                src="https://n.sinaimg.cn/sinacn16/474/w800h474/20180920/0696-hhuhism4152243.jpg"
+                alt="传统制作工艺"
                 className="w-full h-64 sm:h-72 object-cover transition-transform duration-700 hover:scale-110"
               />
               <div className="p-6 sm:p-8 bg-[#f1faee] dark:bg-gray-700">
                 <h3 className="text-xl sm:text-2xl font-semibold text-[#1d3557] dark:text-white mb-3">
-                  百年老店
+                  传统制作工艺
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  创立于1885年，传承五代人的传统工艺，浙江老字号企业
+                  传承百年的手工制作工艺，经炒米、磨粉、配料、细拌、杆粉、印块、两次水蒸、两次火焙等多道工序
                 </p>
               </div>
             </div>
             
-            {/* Image 2: Certificates */}
+            {/* Image 2: Raw Materials */}
             <div className="rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-700 transform hover:-translate-y-4">
               <img 
-                src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=wall%20of%20certificates%20and%20awards%20for%20traditional%20chinese%20food%20business&image_size=square"
-                alt="荣誉证书墙"
+                src="https://img.alicdn.com/i2/2200592611688/O1CN01oD2QJV1OL9EeFfic8_!!2200592611688.jpg"
+                alt="优质原料"
                 className="w-full h-64 sm:h-72 object-cover transition-transform duration-700 hover:scale-110"
               />
               <div className="p-6 sm:p-8 bg-[#f1faee] dark:bg-gray-700">
                 <h3 className="text-xl sm:text-2xl font-semibold text-[#1d3557] dark:text-white mb-3">
-                  荣誉认证
+                  优质原料
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  浙江老字号、非物质文化遗产、浙江省工业旅游示范基地
+                  严格筛选优质糯米、芝麻等原料，确保每一块硬糕的品质和口感
                 </p>
               </div>
             </div>
             
-            {/* Image 3: Exhibition Hall */}
+            {/* Image 3: Baking Process */}
             <div className="rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-700 transform hover:-translate-y-4">
               <img 
-                src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=traditional%20chinese%20food%20exhibition%20hall%20with%20statues%20showing%20traditional%20making%20process&image_size=square"
-                alt="非遗文化展厅"
+                src="https://ts1.tc.mm.bing.net/th/id/R-C.69526b46fb8e9efd9a20ce808eda482c?rik=3CB5V3vkeWy2RA&riu=http%3a%2f%2fimg2.zjolcdn.com%2fpic%2f0%2f14%2f58%2f02%2f14580260_952147.jpg&ehk=aGY%2boKsQkI5RCi0GRdzmL3Uffwtj5As1KNr8aCUL7%2bo%3d&risl=&pid=ImgRaw&r=0"
+                alt="烘焙工艺"
                 className="w-full h-64 sm:h-72 object-cover transition-transform duration-700 hover:scale-110"
               />
               <div className="p-6 sm:p-8 bg-[#f1faee] dark:bg-gray-700">
                 <h3 className="text-xl sm:text-2xl font-semibold text-[#1d3557] dark:text-white mb-3">
-                  非遗文化
+                  烘焙工艺
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  舟山市非物质文化遗产，五代传承的传统制作工艺
+                  传统烘焙工艺与现代技术相结合，确保硬糕口感酥脆，甜而不腻
                 </p>
               </div>
             </div>
@@ -293,7 +429,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 md:py-28 bg-gradient-to-r from-[#e63946] to-[#1d3557]">
+      <section className="py-20 md:py-28 bg-gradient-to-r from-[#e63946] to-[#1d3557] relative z-10">
         <div className="container mx-auto px-4 sm:px-6 text-center">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6">
             立即品尝百年传统美食
@@ -311,7 +447,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#1d3557] text-white py-12 sm:py-16">
+      <footer className="bg-[#1d3557] text-white py-12 sm:py-16 relative z-10">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10">
             <div>

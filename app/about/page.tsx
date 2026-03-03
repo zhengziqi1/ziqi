@@ -27,7 +27,7 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div>
                 <img 
-                  src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=traditional%20chinese%20pastry%20shop%20exterior%20with%20wooden%20signage%20and%20red%20lanterns&image_size=landscape_16_9" 
+                  src="https://ts1.tc.mm.bing.net/th/id/R-C.1631ca258f0b26e2e6c2d278516f96a7?rik=fg3uZCe%2bQbyZeA&riu=http%3a%2f%2fimg2.zjolcdn.com%2fpic%2f0%2f14%2f41%2f88%2f14418800_269646.jpg&ehk=qJcdHwosan976njKBDiCvRh4djNH1qXWPfzhK84vTSM%3d&risl=&pid=ImgRaw&r=0" 
                   alt="海魂硬糕店铺外观" 
                   className="w-full h-auto rounded-lg shadow-lg"
                 />
@@ -47,6 +47,24 @@ export default function AboutPage() {
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Storefront Section */}
+      <section className="py-16 bg-[#f1faee] dark:bg-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl font-bold text-[#e63946] dark:text-white mb-12 text-center">
+              店铺外观
+            </h2>
+            <div className="relative">
+                <img 
+                  src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=traditional%20chinese%20storefront%20with%20wooden%20structure%2C%20red%20signboard%20with%20chinese%20characters%20%22%E6%B5%B7%E9%AD%82%E7%A1%AC%E7%B3%95%22%2C%20traditional%20chinese%20architecture%2C%20clean%20professional%20appearance%2C%20daytime%2C%20high%20quality%20photography&image_size=landscape_16_9" 
+                  alt="海魂硬糕店铺外观" 
+                  className="w-full h-auto rounded-lg shadow-lg"
+                />
+              </div>
           </div>
         </div>
       </section>
@@ -75,7 +93,7 @@ export default function AboutPage() {
               </div>
               <div className="order-1 md:order-2">
                 <img 
-                  src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=traditional%20chinese%20pastry%20making%20process%20with%20wooden%20molds%20and%20steamers&image_size=landscape_16_9" 
+                  src="https://ts3.tc.mm.bing.net/th/id/OIP-C.e70nMv7-q7LYtUWZCfjOgQHaFC?rs=1&pid=ImgDetMain&o=7&rm=3" 
                   alt="海魂硬糕制作工艺" 
                   className="w-full h-auto rounded-lg shadow-lg"
                 />
